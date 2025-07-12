@@ -1,12 +1,19 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
 export default function DynamicBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -14,12 +21,17 @@ export default function DynamicBackground() {
     if (!ctx) return
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      if (typeof window !== "undefined") {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      }
     }
 
     resizeCanvas()
-    window.addEventListener("resize", resizeCanvas)
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", resizeCanvas)
+    }
 
     // Particle system
     const particles: Array<{
@@ -98,9 +110,15 @@ export default function DynamicBackground() {
     animate()
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas)
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", resizeCanvas)
+      }
     }
-  }, [])
+  }, [isClient])
+
+  if (!isClient) {
+    return null
+  }
 
   return (
     <>
@@ -113,13 +131,13 @@ export default function DynamicBackground() {
             key={i}
             className="absolute w-20 h-20 border border-primary/10 rounded-lg"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
+              y: typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
               rotate: 0,
             }}
             animate={{
-              x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
-              y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 1000),
+              x: typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
+              y: typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
               rotate: 360,
             }}
             transition={{
