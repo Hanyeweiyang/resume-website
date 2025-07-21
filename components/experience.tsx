@@ -27,88 +27,49 @@ type Experience = {
 const experiences: Experience[] = [
   {
     id: "exp-1",
-    title: "高级前端开发工程师",
-    company: "科技创新有限公司",
-    location: "深圳，广东",
-    period: "2022年1月 - 至今",
-    startDate: "2022-01",
+    title: "智能化工程师",
+    company: "福建三丰科技有限公司",
+    location: "福建，福州",
+    period: "2024年3月 - 至今",
+    startDate: "2024-03",
     status: "current",
-    companyType: "科技公司",
-    teamSize: 8,
+    companyType: "制造企业",
     description: [
-      "领导前端开发团队，负责新一代SaaS平台的架构设计和开发",
-      "制定前端技术标准和最佳实践，提升团队开发效率",
-      "与产品和设计团队紧密合作，确保用户体验的一致性",
-      "负责技术选型和架构决策，推动技术栈现代化升级",
+      "工业视觉：机器学习开发设备，多场景节省人力",
+      "数字化系统：前后端建设，支持决策咨询",
+      "大模型：本地部署AI，提供并发咨询",
+      "技术铺垫：图像生成参考，提前布局趋势",
     ],
     achievements: [
-      "成功领导团队完成3个大型项目交付，获得客户高度认可",
-      "建立完善的前端工程化体系，部署效率提升40%",
-      "设计并实现组件库，代码复用率提升30%",
-      "应用性能优化，页面加载速度提升25%",
+      "参与IP/IPF倍率检测，提高产品质量20%，节省人力1人",
+      "参与针车布标正反检测，提高生产品质，0错误针车缝合产物",
+      "FMA品质咨询系统，减少产品质量与生产环境沟通时间",
+      "车间数字化看板，信息汇总，减少信息差，建设数字化",
     ],
-    technologies: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Node.js"],
+    technologies: ["Vue", "React","FastAPI", "Python", "OpenCV","Yolo"],
   },
   {
     id: "exp-2",
-    title: "前端开发工程师",
-    company: "数字解决方案科技",
-    location: "广州，广东",
-    period: "2019年3月 - 2021年12月",
-    startDate: "2019-03",
-    endDate: "2021-12",
+    title: "全栈开发工程师",
+    company: "福建乐想天成信息科技有限公司",
+    location: "福建，福州",
+    period: "2021年3月 - 2024年2月",
+    startDate: "2021-03",
+    endDate: "2024-02",
     status: "past",
     companyType: "软件公司",
-    teamSize: 5,
     description: [
-      "负责多个企业级Web应用的前端开发和维护",
-      "参与产品需求分析和技术方案设计",
-      "与后端团队协作，完成API集成和数据交互",
-      "指导初级开发人员，参与代码审查和技术分享",
+      "XR开发​​：Unity眼镜端应用设计，多硬件适配及游戏网络",
+      "数字孪生​​：three.js/Cesium构建模型，数据仿真应用实现",
+      "AI生成技术​​：数字人语音口型驱动，AIGC图像功能开发",
     ],
     achievements: [
-      "独立完成5个中大型项目的前端开发",
-      "建立团队代码规范，提升代码质量",
-      "优化应用性能，用户体验评分提升20%",
+      "参与医学虚拟仿真、教育虚拟仿真、工业虚拟仿真应用开发",
+      "参与 AI 绘画页面业务开发与设计并训练专属模型与上线网站",
+      "参与数字人与大模型相关研究，参与数字人陪伴、数字人直播、数字人教育等多项技术研讨和项目分享",      
+      "参与2023年华为数字世界 一触即达担任讲解员、2023年创客中国比赛、2023年世界 VR 博览会新闻阅读分享等等多项活动",
     ],
-    technologies: ["React", "Redux", "JavaScript", "SCSS", "Webpack"],
-  },
-  {
-    id: "exp-3",
-    title: "Web开发工程师",
-    company: "创意设计工作室",
-    location: "上海，上海",
-    period: "2017年6月 - 2019年2月",
-    startDate: "2017-06",
-    endDate: "2019-02",
-    status: "past",
-    companyType: "设计工作室",
-    teamSize: 3,
-    description: [
-      "为不同行业客户开发定制化网站和Web应用",
-      "与设计师密切合作，实现高保真度的视觉效果",
-      "负责网站性能优化和SEO优化",
-      "维护和更新现有项目，提供技术支持",
-    ],
-    achievements: [
-      "成功交付15+个客户项目，客户满意度95%+",
-      "掌握多种CMS系统，提升开发效率",
-      "建立项目模板库，缩短开发周期30%",
-    ],
-    technologies: ["HTML5", "CSS3", "JavaScript", "WordPress", "PHP"],
-  },
-  {
-    id: "exp-gap",
-    title: "技能提升与学习",
-    company: "自主学习",
-    location: "深圳，广东",
-    period: "2021年12月 - 2022年1月",
-    startDate: "2021-12",
-    endDate: "2022-01",
-    status: "gap",
-    description: ["专注于现代前端技术栈的深入学习", "完成多个开源项目，提升技术能力", "参与技术社区活动和在线课程学习"],
-    achievements: ["完成Next.js和TypeScript的系统学习", "贡献开源项目，获得社区认可", "获得相关技术认证"],
-    technologies: ["Next.js", "TypeScript", "React Hooks", "GraphQL"],
+    technologies: ["Vue", "NodeJS", "Gin", "Python", "Unity 3D"],
   },
 ]
 
@@ -416,24 +377,6 @@ export default function Experience() {
           transition={{ duration: 0.6, delay: 1.8 }}
           className="mt-16 text-center"
         >
-          <Card className="bg-gradient-to-r from-primary/5 via-purple-500/5 to-cyan-500/5 border-primary/20 backdrop-blur-sm">
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">5+</div>
-                  <div className="text-sm text-muted-foreground">年工作经验</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">20+</div>
-                  <div className="text-sm text-muted-foreground">完成项目</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">10+</div>
-                  <div className="text-sm text-muted-foreground">技术栈</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </motion.div>
       </div>
     </section>

@@ -220,7 +220,7 @@ export default function Hero() {
             className="flex items-center gap-2 text-sm text-muted-foreground"
           >
             <FileText className="h-4 w-4" />
-            <span>PDF格式 • 最后更新：2024年1月</span>
+            <span>PDF格式 • 最后更新：2025年7月</span>
             <motion.div whileHover={{ scale: 1.1 }} className="ml-2">
               <Button
                 variant="ghost"

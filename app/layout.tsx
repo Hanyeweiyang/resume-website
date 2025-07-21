@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "郑嘉煌 | 全栈开发工程师",
-  description: "郑嘉煌的个人作品集和简历，专注于React、Next.js和现代Web技术的全栈开发工程师。",
-    generator: 'v0.dev'
+  description: "专注于使用现代Web技术构建卓越的数字体验，注重性能优化、可访问性和精美的设计。",
+    generator: '郑嘉煌'
 }
 
 export default function RootLayout({

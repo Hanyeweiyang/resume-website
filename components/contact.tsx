@@ -322,9 +322,9 @@ export default function Contact() {
 
             <div className="grid gap-6">
               {[
-                { icon: Mail, label: "邮箱", value: "zheng.jiahuang@example.com" },
-                { icon: Phone, label: "电话", value: "+86 138 0000 0000" },
-                { icon: MapPin, label: "位置", value: "深圳，广东省" },
+                { icon: Mail, label: "邮箱", value: "2205425481@qq.com" },
+                { icon: Phone, label: "电话", value: "+86 136 1693 2995" },
+                { icon: MapPin, label: "位置", value: "福州，福建省" },
               ].map((item, index) => (
                 <motion.div
                   key={item.label}
@@ -369,42 +369,42 @@ export default function Contact() {
                 {[
                   {
                     icon: Github,
-                    href: "https://github.com/zhengjiahuang",
+                    href: "https://github.com/Hanyeweiyang",
                     label: "GitHub",
                     color: "hover:text-gray-900 dark:hover:text-white",
                     bgColor: "hover:bg-gray-100 dark:hover:bg-gray-800",
                   },
                   {
                     icon: GiteeIcon,
-                    href: "https://gitee.com/zhengjiahuang",
+                    href: "https://gitee.com/hanyeweiyang",
                     label: "Gitee",
                     color: "hover:text-red-600",
                     bgColor: "hover:bg-red-50 dark:hover:bg-red-900/20",
                   },
                   {
                     icon: DouyinIcon,
-                    href: "https://www.douyin.com/user/zhengjiahuang",
+                    href: "https://www.douyin.com/user/MS4wLjABAAAAPmVGFR9EI1mJ7UerU7e2LvM5ifv2FoybOuT1sJuHhTu5igHhV_SoWlcTUB2VlXZJ?from_tab_name=main",
                     label: "抖音",
                     color: "hover:text-black dark:hover:text-white",
                     bgColor: "hover:bg-gray-100 dark:hover:bg-gray-800",
                   },
                   {
                     icon: KuaishouIcon,
-                    href: "https://www.kuaishou.com/profile/zhengjiahuang",
+                    href: "https://www.kuaishou.com/profile/3xecm9wvvrc3hqg",
                     label: "快手",
                     color: "hover:text-orange-500",
                     bgColor: "hover:bg-orange-50 dark:hover:bg-orange-900/20",
                   },
                   {
                     icon: BilibiliIcon,
-                    href: "https://space.bilibili.com/zhengjiahuang",
+                    href: "https://space.bilibili.com/36657163?spm_id_from=333.337.0.0",
                     label: "哔哩哔哩",
                     color: "hover:text-pink-500",
                     bgColor: "hover:bg-pink-50 dark:hover:bg-pink-900/20",
                   },
                   {
                     icon: XiaohongshuIcon,
-                    href: "https://www.xiaohongshu.com/user/profile/zhengjiahuang",
+                    href: "https://www.xiaohongshu.com/user/profile/65dc9ab1000000000500a0f6?xsec_token=ABo-IAzKpdlIhhpl7m9Jp9wFyyz3F4_ydjOCyymPPTOxg%3D&xsec_source=pc_search&m_source=bingpz",
                     label: "小红书",
                     color: "hover:text-red-500",
                     bgColor: "hover:bg-red-50 dark:hover:bg-red-900/20",
