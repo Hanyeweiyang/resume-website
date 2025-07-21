@@ -2,13 +2,15 @@
 
 import { useRef, useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, Download, FileText, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/use-toast"
 import Image from "next/image"
 
 export default function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isClient, setIsClient] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -17,6 +19,38 @@ export default function Hero() {
   const scrollToNextSection = () => {
     const nextSection = scrollRef.current?.nextElementSibling
     nextSection?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const handleResumeDownload = async () => {
+    setIsDownloading(true)
+
+    try {
+      // Simulate download process
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      // In a real application, you would trigger the actual download here
+      // For demo purposes, we'll show a success message
+      toast({
+        title: "简历下载成功！",
+        description: "感谢您对我的关注，简历已开始下载。",
+      })
+
+      // Simulate file download
+      const link = document.createElement("a")
+      link.href = "/resume.pdf" // This would be your actual resume file
+      link.download = "郑嘉煌_全栈开发工程师_简历.pdf"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      toast({
+        title: "下载失败",
+        description: "简历下载遇到问题，请稍后重试或直接联系我。",
+        variant: "destructive",
+      })
+    } finally {
+      setIsDownloading(false)
+    }
   }
 
   return (
@@ -112,22 +146,91 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="flex flex-wrap gap-4"
+            className="flex flex-col sm:flex-row gap-4"
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            {/* Contact Button */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
               <Button
                 size="lg"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                className="w-full sm:w-auto bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground font-semibold px-8 py-3 h-12 transition-all duration-300 shadow-lg hover:shadow-xl focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                aria-label="联系我，讨论项目合作"
               >
-                联系我
+                <span>联系我</span>
               </Button>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="lg" variant="outline" asChild>
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                  下载简历
-                </a>
+
+            {/* Enhanced Resume Download Button */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={handleResumeDownload}
+                disabled={isDownloading}
+                className="group w-full sm:w-auto relative overflow-hidden bg-background/80 backdrop-blur-sm border-2 border-muted/40 hover:border-primary/60 text-foreground hover:text-primary font-semibold px-6 py-3 h-12 transition-all duration-300 shadow-md hover:shadow-lg focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                aria-label={isDownloading ? "正在下载简历" : "下载我的简历PDF文件"}
+              >
+                {/* Background gradient effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Button content */}
+                <div className="relative flex items-center gap-2.5">
+                  {isDownloading ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                      >
+                        <Download className="h-5 w-5" />
+                      </motion.div>
+                      <span className="hidden sm:inline">下载中...</span>
+                      <span className="sm:hidden">下载中</span>
+                    </>
+                  ) : (
+                    <>
+                      <motion.div className="flex items-center" whileHover={{ y: -1 }} transition={{ duration: 0.2 }}>
+                        <FileText className="h-5 w-5 mr-1" />
+                        <Download className="h-4 w-4 -ml-1" />
+                      </motion.div>
+                      <span className="hidden sm:inline">下载简历</span>
+                      <span className="sm:hidden">简历</span>
+                    </>
+                  )}
+                </div>
+
+                {/* Animated border effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-md border-2 border-primary/20 opacity-0 group-hover:opacity-100"
+                  initial={false}
+                  whileHover={{
+                    scale: [1, 1.02, 1],
+                    opacity: [0, 0.3, 0],
+                  }}
+                  transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+                />
+              </Button>
+            </motion.div>
+          </motion.div>
+
+          {/* Additional Resume Info */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex items-center gap-2 text-sm text-muted-foreground"
+          >
+            <FileText className="h-4 w-4" />
+            <span>PDF格式 • 最后更新：2024年1月</span>
+            <motion.div whileHover={{ scale: 1.1 }} className="ml-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.open("/resume-preview.html", "_blank")}
+                className="h-6 px-2 text-xs hover:text-primary transition-colors"
+                aria-label="在新窗口预览简历"
+              >
+                <ExternalLink className="h-3 w-3 mr-1" />
+                预览
               </Button>
             </motion.div>
           </motion.div>

@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Github, Mail, MapPin, Phone, CheckCircle, XCircle, Loader2 } from "lucide-react"
 import { DouyinIcon, KuaishouIcon, BilibiliIcon, XiaohongshuIcon, GiteeIcon } from "./social-icons"
+import ResumeDownloadButton from "./resume-download-button"
 
 // Form validation types
 interface FormData {
@@ -350,6 +351,17 @@ export default function Contact() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Enhanced Resume Download Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="space-y-4"
+            >
+              <h4 className="font-medium">获取我的简历</h4>
+              <ResumeDownloadButton variant="card" />
+            </motion.div>
 
             <div className="space-y-4">
               <h4 className="font-medium">社交媒体</h4>
