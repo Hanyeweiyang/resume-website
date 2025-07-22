@@ -186,7 +186,7 @@ export default function ResumeDownloadButton({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => window.open("/resume-preview.html", "_blank")}
+              onClick={() => window.open("/resume.pdf", "_blank")}
               className="h-5 px-2 text-xs hover:text-primary transition-colors"
               aria-label="在新窗口预览简历"
             >
