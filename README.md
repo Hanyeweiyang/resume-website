@@ -4,7 +4,25 @@
 
 ## 预览图
 
-![预览图](./public/project/resume-website.png)
+### 首页
+
+![预览图](public\readme-img\首页.png)
+
+### 技能
+
+![预览图](public\readme-img\技能.png)
+
+### 项目
+
+![预览图](public\readme-img\项目.png)
+
+### 经验
+
+![预览图](public\readme-img\经验.png)
+
+### 联系
+
+![预览图](public\readme-img\联系.png)
 
 ## 核心亮点
 
@@ -35,54 +53,56 @@
 - PostCSS
 - pnpm (包管理器)
 
-## 项目结构
+## 项目结构说明
 
-```
-resume-website/
-├── app/ # 应用程序主目录
-├── components/ # 组件目录
-├── hooks/ # 自定义钩子目录
-├── public/ # 静态资源目录
-├── styles/ # 样式目录
-├── components.json # 组件配置文件
-├── next-env.d.ts # Next.js 环境声明文件
-├── next.config.mjs # Next.js 配置文件
-├── package.json # 项目依赖配置
-├── pnpm-lock.yaml # 依赖锁定文件
-├── postcss.config.mjs # PostCSS 配置文件
-├── tailwind.config.ts # Tailwind CSS 配置文件
-└── tsconfig.json # TypeScript 配置文件
+- `/app` - Next.js 应用程序主目录
+- `/components` - UI 组件和自定义组件
+- `/contexts` - React 上下文，包括语言设置
+- `/hooks` - 自定义 React 钩子
+- `/services` - 后端服务接口，如汇率服务
+- `/public` - 静态资源文件
+- `/styles` - 全局样式定义
 
-```
+## 开发环境配置
 
-## 开发环境设置
+### 前置要求
 
-克隆仓库到本地：
+- Node.js 18.x 或更高版本
+- pnpm (推荐) 或 npm, yarn
+
+### 安装依赖
 
 ```bash
+# 克隆项目
 git clone https://github.com/yourusername/resume-website.git
-```
+cd unit-converter
 
-安装依赖：
-
-```bash
+# 使用pnpm安装依赖
 pnpm install
 ```
 
-开发模式运行：
+### 开发命令
 
 ```bash
+# 启动开发服务器
 pnpm dev
-```
 
-构建生产环境：
-
-```bash
+# 构建生产版本
 pnpm build
-```
 
-预览生产环境：
-
-```bash
+# 启动生产服务器
 pnpm start
+
+# 代码检查
+pnpm lint
 ```
+
+## 部署信息
+
+项目已部署在 Vercel 平台：
+
+**[https://zjh-biographical-notes.vercel.app/](https://zjh-biographical-notes.vercel.app/)**
+
+## 许可证
+
+本项目采用 MIT 许可证
