@@ -6,23 +6,23 @@
 
 ### 首页
 
-![预览图](public\readme-img\首页.png)
+![预览图](./public/readme-img/首页.png)
 
 ### 技能
 
-![预览图](public\readme-img\技能.png)
+![预览图](./public/readme-img/技能.png)
 
 ### 项目
 
-![预览图](public\readme-img\项目.png)
+![预览图](./public/readme-img/项目.png)
 
 ### 经验
 
-![预览图](public\readme-img\经验.png)
+![预览图](./public/readme-img/经验.png)
 
 ### 联系
 
-![预览图](public\readme-img\联系.png)
+![预览图](./public/readme-img/联系.png)
 
 ## 核心亮点
 
