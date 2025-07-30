@@ -286,7 +286,7 @@ export default function Experience() {
                           {exp.status === "current" && (
                             <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
                               <Clock className="h-4 w-4" />
-                              <span>在职中</span>
+                              <span>交接中</span>
                             </div>
                           )}
                         </div>

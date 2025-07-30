@@ -70,6 +70,12 @@ export default function Hero() {
             repeat: Number.POSITIVE_INFINITY,
             ease: "linear",
           }}
+          style={{ 
+            willChange: 'background-position', 
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            perspective: '1000px'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/50 to-background"></div>
       </div>
@@ -93,6 +99,11 @@ export default function Hero() {
                 duration: 3 + Math.random() * 2,
                 repeat: Number.POSITIVE_INFINITY,
                 delay: Math.random() * 2,
+              }}
+              style={{ 
+                willChange: 'transform, opacity', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
               }}
             />
           ))}
@@ -120,6 +131,11 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-purple-500 to-cyan-500 bg-clip-text text-transparent"
+              style={{ 
+                willChange: 'transform', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
             >
               郑嘉煌
             </motion.h1>
@@ -128,6 +144,11 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
               className="text-2xl sm:text-3xl font-medium text-muted-foreground"
+              style={{ 
+                willChange: 'transform', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
             >
               全栈开发工程师
             </motion.h3>
@@ -138,6 +159,11 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
             className="text-lg text-muted-foreground max-w-md"
+            style={{ 
+              willChange: 'transform', 
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           >
             我专注于使用现代Web技术构建卓越的数字体验，注重性能优化、可访问性和精美的设计。
           </motion.p>
@@ -147,9 +173,20 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4"
+            style={{ 
+              willChange: 'transform', 
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           >
             {/* Contact Button */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none"
+              style={{ 
+                willChange: 'transform', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
+            >
               <Button
                 size="lg"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
@@ -161,7 +198,13 @@ export default function Hero() {
             </motion.div>
 
             {/* Enhanced Resume Download Button */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none"
+              style={{ 
+                willChange: 'transform', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
+            >
               <Button
                 size="lg"
                 variant="outline"
@@ -180,6 +223,11 @@ export default function Hero() {
                       <motion.div
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                        style={{ 
+                          willChange: 'transform', 
+                          transform: 'translateZ(0)',
+                          backfaceVisibility: 'hidden'
+                        }}
                       >
                         <Download className="h-5 w-5" />
                       </motion.div>
@@ -188,7 +236,13 @@ export default function Hero() {
                     </>
                   ) : (
                     <>
-                      <motion.div className="flex items-center" whileHover={{ y: -1 }} transition={{ duration: 0.2 }}>
+                      <motion.div className="flex items-center" whileHover={{ y: -1 }} transition={{ duration: 0.2 }}
+                        style={{ 
+                          willChange: 'transform', 
+                          transform: 'translateZ(0)',
+                          backfaceVisibility: 'hidden'
+                        }}
+                      >
                         <FileText className="h-5 w-5 mr-1" />
                         <Download className="h-4 w-4 -ml-1" />
                       </motion.div>
@@ -207,6 +261,11 @@ export default function Hero() {
                     opacity: [0, 0.3, 0],
                   }}
                   transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+                  style={{ 
+                    willChange: 'transform, opacity', 
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
+                  }}
                 />
               </Button>
             </motion.div>
@@ -218,10 +277,21 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
             className="flex items-center gap-2 text-sm text-muted-foreground"
+            style={{ 
+              willChange: 'transform', 
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           >
             <FileText className="h-4 w-4" />
             <span>PDF格式 • 最后更新：2025年7月</span>
-            <motion.div whileHover={{ scale: 1.1 }} className="ml-2">
+            <motion.div whileHover={{ scale: 1.1 }} className="ml-2"
+              style={{ 
+                willChange: 'transform', 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
+            >
               <Button
                 variant="ghost"
                 size="sm"
@@ -241,6 +311,11 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
           className="relative aspect-square max-w-md mx-auto lg:ml-auto"
+          style={{ 
+            willChange: 'transform', 
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
         >
           <motion.div
             className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/20 to-purple-500/20 blur-3xl"
@@ -253,11 +328,21 @@ export default function Hero() {
               repeat: Number.POSITIVE_INFINITY,
               ease: "linear",
             }}
+            style={{ 
+              willChange: 'transform', 
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           />
           <motion.div
             className="relative h-full w-full rounded-full border border-muted/20 overflow-hidden backdrop-blur-sm"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
+            style={{ 
+              willChange: 'transform', 
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           >
             <Image src="/placeholder.svg?height=500&width=500" alt="郑嘉煌" fill className="object-cover" priority />
           </motion.div>
@@ -269,6 +354,11 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
         className="absolute bottom-8 z-10"
+        style={{ 
+          willChange: 'transform', 
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden'
+        }}
       >
         <Button variant="ghost" size="icon" onClick={scrollToNextSection}>
           <ArrowDown className="h-6 w-6" />

@@ -146,7 +146,7 @@ export default function Projects() {
         </div>
 
         <Dialog open={!!selectedProject} onOpenChange={(open) => !open && setSelectedProject(null)}>
-          <DialogContent className="max-w-3xl bg-background/95 backdrop-blur-md">
+          <DialogContent className="max-w-3xl bg-background/95 backdrop-blur-md max-h-[90vh] overflow-y-auto md:max-w-2xl lg:max-w-3xl">
             <DialogHeader>
               <DialogTitle className="text-2xl">{selectedProject?.title}</DialogTitle>
               <DialogDescription className="text-muted-foreground">{selectedProject?.description}</DialogDescription>
@@ -174,10 +174,10 @@ export default function Projects() {
                 ))}
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-col sm:flex-row">
                 {selectedProject?.github && (
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="flex-1">
                       <a
                         href={selectedProject.github}
                         target="_blank"
@@ -192,7 +192,7 @@ export default function Projects() {
                 )}
                 {selectedProject?.demo && (
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button size="sm" asChild className="bg-gradient-to-r from-primary to-purple-600">
+                    <Button size="sm" asChild className="bg-gradient-to-r from-primary to-purple-600 flex-1">
                       <a
                         href={selectedProject.demo}
                         target="_blank"
