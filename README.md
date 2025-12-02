@@ -72,18 +72,18 @@
 
 ### 安装依赖
 
-```bash
+\`\`\`bash
 # 克隆项目
 git clone https://github.com/yourusername/resume-website.git
 cd unit-converter
 
 # 使用pnpm安装依赖
 pnpm install
-```
+\`\`\`
 
 ### 开发命令
 
-```bash
+\`\`\`bash
 # 启动开发服务器
 pnpm dev
 
@@ -95,7 +95,7 @@ pnpm start
 
 # 代码检查
 pnpm lint
-```
+\`\`\`
 
 ## 部署信息
 
