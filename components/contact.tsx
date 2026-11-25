@@ -9,43 +9,48 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { Github, Mail, MapPin, Phone, CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { contactEmail, contactMaxLength, contactMessageSchema, type ContactMessage } from "@/lib/contact"
+import { Github, Mail, MapPin, Phone, CheckCircle, ExternalLink, Loader2 } from "lucide-react"
 import { DouyinIcon, KuaishouIcon, BilibiliIcon, XiaohongshuIcon, GiteeIcon } from "./social-icons"
 import ResumeDownloadButton from "./resume-download-button"
 
-// Form validation types
-interface FormData {
-  name: string
-  email: string
-  subject: string
-  message: string
+const emptyForm: ContactMessage = { name: "", email: "", subject: "", message: "" }
+const maxDraftUrlLength = 5000
+type FormErrors = Partial<Record<keyof ContactMessage, string[]>>
+type Submission =
+  | { status: "idle" | "submitting" }
+  | { status: "success" | "error"; message: string }
+
+function getEmailDraft(form: ContactMessage) {
+  const subject = form.subject.trim() || "简历站联系"
+  const details = [
+    form.name.trim() && "姓名：" + form.name.trim(),
+    form.email.trim() && "联系邮箱：" + form.email.trim(),
+  ].filter(Boolean).join("\n")
+  const body = [form.message.trim(), details].filter(Boolean).join("\n\n")
+
+  const gmail = new URL("https://mail.google.com/mail/")
+  gmail.search = new URLSearchParams({ view: "cm", fs: "1", to: contactEmail, su: subject, body }).toString()
+  // Long, percent-encoded messages can exceed Gmail's URL limit.
+  const copyBody = gmail.href.length > maxDraftUrlLength
+  if (copyBody) gmail.searchParams.delete("body")
+
+  const native = new URLSearchParams({ subject })
+  if (!copyBody) native.set("body", body.replace(/\r?\n/g, "\r\n"))
+  const mailto = "mailto:" + contactEmail + "?" + native.toString().replace(/\+/g, "%20")
+  return { gmail: gmail.href, mailto, body, copyBody }
 }
 
-interface FormErrors {
-  name?: string
-  email?: string
-  subject?: string
-  message?: string
-}
-
-// Form submission states
-type SubmissionState = "idle" | "submitting" | "success" | "error"
-
-export default function Contact() {
+export default function Contact({ canSubmit }: { canSubmit: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
+  const submitting = useRef(false)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
-  // Form state management
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  })
+  const [formData, setFormData] = useState(emptyForm)
   const [errors, setErrors] = useState<FormErrors>({})
-  const [submissionState, setSubmissionState] = useState<SubmissionState>("idle")
+  const [submission, setSubmission] = useState<Submission>({ status: "idle" })
+  const [copyNotice, setCopyNotice] = useState("")
+  const submissionState = submission.status
   const [isClient, setIsClient] = useState(false)
 
   // Ensure client-side rendering
@@ -53,142 +58,55 @@ export default function Contact() {
     setIsClient(true)
   }, [])
 
-  // Form validation
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {}
-
-    if (!formData.name.trim()) {
-      newErrors.name = "姓名不能为空"
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "姓名至少需要2个字符"
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "邮箱不能为空"
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "请输入有效的邮箱地址"
-    }
-
-    if (!formData.subject.trim()) {
-      newErrors.subject = "主题不能为空"
-    } else if (formData.subject.trim().length < 5) {
-      newErrors.subject = "主题至少需要5个字符"
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "留言不能为空"
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "留言至少需要10个字符"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  // Handle input changes
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof ContactMessage, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
-
-    // Clear error for this field when user starts typing
+    setCopyNotice("")
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
+    if (submissionState === "success" || submissionState === "error") setSubmission({ status: "idle" })
   }
 
-  // Simulate form submission with realistic scenarios
-  const submitForm = async (data: FormData): Promise<{ success: boolean; message: string }> => {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 2000 + Math.random() * 1000))
-
-    // Simulate different outcomes based on email domain (for demo purposes)
-    const emailDomain = data.email.split("@")[1]?.toLowerCase()
-
-    // Simulate server errors for certain domains
-    if (emailDomain === "error.com") {
-      throw new Error("服务器暂时无法处理您的请求，请稍后重试")
-    }
-
-    if (emailDomain === "timeout.com") {
-      throw new Error("请求超时，请检查您的网络连接")
-    }
-
-    // Simulate validation errors
-    if (data.message.toLowerCase().includes("spam")) {
-      return {
-        success: false,
-        message: "检测到可疑内容，请修改您的留言后重试",
-      }
-    }
-
-    // Success case
-    return {
-      success: true,
-      message: "感谢您的留言！我会在24小时内回复您。",
-    }
-  }
-
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    if (!validateForm()) {
-      toast({
-        title: "表单验证失败",
-        description: "请检查并修正表单中的错误",
-        variant: "destructive",
-      })
+    if (!canSubmit || submitting.current) return
+    const payload = contactMessageSchema.safeParse(formData)
+    if (!payload.success) {
+      setErrors(payload.error.flatten().fieldErrors)
+      setSubmission({ status: "error", message: "请检查标出的字段。" })
       return
     }
 
-    setSubmissionState("submitting")
-
+    submitting.current = true
+    setSubmission({ status: "submitting" })
+    const fallback = "暂时无法确认发送结果。"
     try {
-      const result = await submitForm(formData)
-
-      if (result.success) {
-        setSubmissionState("success")
-        toast({
-          title: "消息发送成功！",
-          description: result.message,
-        })
-
-        // Reset form after successful submission
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        })
-
-        // Reset submission state after showing success
-        setTimeout(() => {
-          setSubmissionState("idle")
-        }, 3000)
-      } else {
-        setSubmissionState("error")
-        toast({
-          title: "发送失败",
-          description: result.message,
-          variant: "destructive",
-        })
-
-        setTimeout(() => {
-          setSubmissionState("idle")
-        }, 3000)
-      }
-    } catch (error) {
-      setSubmissionState("error")
-      const errorMessage = error instanceof Error ? error.message : "发送失败，请稍后重试"
-
-      toast({
-        title: "发送失败",
-        description: errorMessage,
-        variant: "destructive",
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload.data),
       })
+      const result = await response.json()
+      if (response.ok && typeof result.message === "string") {
+        setFormData(emptyForm)
+        setSubmission({ status: "success", message: result.message })
+        return
+      }
+      setSubmission({ status: "error", message: typeof result.message === "string" ? result.message : fallback })
+    } catch {
+      setSubmission({ status: "error", message: fallback })
+    } finally {
+      submitting.current = false
+    }
+  }
 
-      setTimeout(() => {
-        setSubmissionState("idle")
-      }, 3000)
+  const emailDraft = getEmailDraft(formData)
+  const copyDraftBody = async () => {
+    try {
+      await navigator.clipboard.writeText(emailDraft.body)
+      setCopyNotice("正文已复制，到写信窗口粘贴即可。")
+    } catch {
+      setCopyNotice("复制失败，请手动复制上方留言内容。")
     }
   }
 
@@ -206,30 +124,11 @@ export default function Contact() {
         return (
           <>
             <CheckCircle className="h-4 w-4" />
-            发送成功
-          </>
-        )
-      case "error":
-        return (
-          <>
-            <XCircle className="h-4 w-4" />
-            发送失败
+            已提交
           </>
         )
       default:
         return "发送消息"
-    }
-  }
-
-  // Get button variant based on submission state
-  const getButtonVariant = () => {
-    switch (submissionState) {
-      case "success":
-        return "default"
-      case "error":
-        return "destructive"
-      default:
-        return "default"
     }
   }
 
@@ -322,7 +221,7 @@ export default function Contact() {
 
             <div className="grid gap-6">
               {[
-                { icon: Mail, label: "邮箱", value: "2205425481@qq.com" },
+                { icon: Mail, label: "邮箱", value: contactEmail, href: "mailto:" + contactEmail },
                 { icon: Phone, label: "电话", value: "+86 136 1693 2995" },
                 { icon: MapPin, label: "位置", value: "福州，福建省" },
               ].map((item, index) => (
@@ -344,7 +243,11 @@ export default function Contact() {
                       </motion.div>
                       <div>
                         <p className="text-sm text-muted-foreground">{item.label}</p>
-                        <p className="font-medium">{item.value}</p>
+                        {item.href ? (
+                          <a href={item.href} className="font-medium hover:underline">{item.value}</a>
+                        ) : (
+                          <p className="font-medium">{item.value}</p>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -449,15 +352,21 @@ export default function Contact() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:flex lg:flex-col"
           >
-            <Card className="bg-background/50 backdrop-blur-sm border-muted/20">
-              <CardContent className="p-6">
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            <Card className="border-muted/20 bg-background/50 backdrop-blur-sm lg:flex lg:grow lg:flex-col">
+              <CardContent className="p-6 lg:flex lg:grow lg:flex-col">
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6 lg:grow">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <motion.div className="space-y-2" whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                      <Label htmlFor="name">姓名 *</Label>
+                      <Label htmlFor="name">姓名{canSubmit && " *"}</Label>
                       <Input
                         id="name"
+                        autoComplete="name"
+                        required={canSubmit}
+                        maxLength={contactMaxLength.name}
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? "contact-name-error" : undefined}
                         placeholder="您的姓名"
                         value={formData.name}
                         onChange={(e) => handleInputChange("name", e.target.value)}
@@ -466,19 +375,25 @@ export default function Contact() {
                       />
                       {errors.name && (
                         <motion.p
+                          id="contact-name-error"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           className="text-sm text-destructive"
                         >
-                          {errors.name}
+                          {errors.name[0]}
                         </motion.p>
                       )}
                     </motion.div>
                     <motion.div className="space-y-2" whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                      <Label htmlFor="email">邮箱 *</Label>
+                      <Label htmlFor="email">邮箱{canSubmit && " *"}</Label>
                       <Input
                         id="email"
                         type="email"
+                        autoComplete="email"
+                        required={canSubmit}
+                        maxLength={contactMaxLength.email}
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? "contact-email-error" : undefined}
                         placeholder="您的邮箱"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
@@ -487,20 +402,25 @@ export default function Contact() {
                       />
                       {errors.email && (
                         <motion.p
+                          id="contact-email-error"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           className="text-sm text-destructive"
                         >
-                          {errors.email}
+                          {errors.email[0]}
                         </motion.p>
                       )}
                     </motion.div>
                   </div>
 
                   <motion.div className="space-y-2" whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                    <Label htmlFor="subject">主题 *</Label>
+                    <Label htmlFor="subject">主题{canSubmit && " *"}</Label>
                     <Input
                       id="subject"
+                      required={canSubmit}
+                      maxLength={contactMaxLength.subject}
+                      aria-invalid={!!errors.subject}
+                      aria-describedby={errors.subject ? "contact-subject-error" : undefined}
                       placeholder="我能为您做些什么？"
                       value={formData.subject}
                       onChange={(e) => handleInputChange("subject", e.target.value)}
@@ -509,64 +429,95 @@ export default function Contact() {
                     />
                     {errors.subject && (
                       <motion.p
+                        id="contact-subject-error"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-sm text-destructive"
                       >
-                        {errors.subject}
+                        {errors.subject[0]}
                       </motion.p>
                     )}
                   </motion.div>
 
-                  <motion.div className="space-y-2" whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                    <Label htmlFor="message">留言 *</Label>
+                  <motion.div className="flex flex-col gap-2 lg:grow" whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                    <Label htmlFor="message">留言{canSubmit && " *"}</Label>
                     <Textarea
                       id="message"
+                      required={canSubmit}
+                      maxLength={contactMaxLength.message}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? "contact-message-error" : undefined}
                       placeholder="告诉我您的项目..."
-                      className={`min-h-[150px] bg-background/50 ${errors.message ? "border-destructive" : ""}`}
+                      className={`min-h-[150px] bg-background/50 lg:grow ${errors.message ? "border-destructive" : ""}`}
                       value={formData.message}
                       onChange={(e) => handleInputChange("message", e.target.value)}
                       disabled={submissionState === "submitting"}
                     />
                     {errors.message && (
                       <motion.p
+                        id="contact-message-error"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-sm text-destructive"
                       >
-                        {errors.message}
+                        {errors.message[0]}
                       </motion.p>
                     )}
                   </motion.div>
 
-                  <motion.div
-                    whileHover={{ scale: submissionState === "submitting" ? 1 : 1.02 }}
-                    whileTap={{ scale: submissionState === "submitting" ? 1 : 0.98 }}
-                  >
-                    <Button
-                      type="submit"
-                      className={`w-full transition-all duration-300 ${
-                        submissionState === "success"
-                          ? "bg-green-600 hover:bg-green-700"
-                          : submissionState === "error"
-                            ? "bg-red-600 hover:bg-red-700"
-                            : "bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-                      }`}
-                      disabled={submissionState === "submitting"}
-                      variant={getButtonVariant()}
+                  {canSubmit && (
+                    <motion.div
+                      whileHover={{ scale: submissionState === "submitting" ? 1 : 1.02 }}
+                      whileTap={{ scale: submissionState === "submitting" ? 1 : 0.98 }}
                     >
-                      {getButtonContent()}
-                    </Button>
-                  </motion.div>
+                      <Button
+                        type="submit"
+                        className={`w-full transition-all duration-300 ${
+                          submissionState === "success"
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                        }`}
+                        disabled={submissionState === "submitting"}
+                      >
+                        {getButtonContent()}
+                      </Button>
+                    </motion.div>
+                  )}
 
-                  <motion.p
-                    className="text-xs text-muted-foreground text-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    * 必填字段。您的信息将被安全处理，不会与第三方共享。
-                  </motion.p>
+                  <div className="space-y-2 text-center">
+                    {canSubmit && (
+                      <div role="status" className={submissionState === "error" ? "text-sm text-destructive" : "text-sm"}>
+                        {"message" in submission ? submission.message : null}
+                      </div>
+                    )}
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                      <Button
+                        asChild
+                        size={canSubmit ? "sm" : "default"}
+                        variant={canSubmit ? "outline" : "default"}
+                        className={canSubmit ? undefined : "w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"}
+                      >
+                        <a href={emailDraft.gmail} target="_blank" rel="noopener noreferrer">
+                          在 Gmail 写邮件
+                          <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+                        </a>
+                      </Button>
+                      <a href={emailDraft.mailto} className="text-sm font-medium text-primary underline">
+                        用邮件客户端写信
+                      </a>
+                    </div>
+                    {emailDraft.copyBody && (
+                      <div className="text-xs text-muted-foreground">
+                        留言较长，可先{" "}
+                        <button type="button" onClick={copyDraftBody} className="font-medium text-primary underline">
+                          复制正文
+                        </button>
+                        {" "}再到写信窗口粘贴。
+                        <p role="status">{copyNotice}</p>
+                      </div>
+                    )}
+                    {canSubmit && <p className="text-xs text-muted-foreground">站内留言同一 IP 每 24 小时可提交一次。</p>}
+                  </div>
                 </form>
               </CardContent>
             </Card>

@@ -38,7 +38,7 @@ export default function Skills() {
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
   return (
-    <section id="skills" ref={ref} className="py-20 bg-background/80 backdrop-blur-sm relative">
+    <section id="skills" ref={ref} className="relative scroll-mt-16 bg-background/80 py-20 backdrop-blur-sm">
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -83,7 +83,7 @@ export default function Skills() {
 
         <Tabs defaultValue="frontend" className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full max-w-md bg-background/50 backdrop-blur-sm">
+            <TabsList aria-label="技能分类" className="grid h-auto w-full max-w-md grid-cols-2 gap-1 bg-background/50 backdrop-blur-sm md:h-10 md:grid-cols-4 md:gap-0">
               <TabsTrigger value="frontend">前端技术</TabsTrigger>
               <TabsTrigger value="backend">后端技术</TabsTrigger>
               <TabsTrigger value="tools">开发工具</TabsTrigger>

@@ -1,382 +1,175 @@
-"use client"
-
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { Award, Briefcase, Building2, Calendar, CheckCircle2, MapPin, TrendingUp } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Briefcase, Calendar, MapPin, Building2, TrendingUp, Clock, CheckCircle2, Users, Award } from "lucide-react"
 
-type EmploymentStatus = "current" | "past" | "contract" | "freelance" | "gap"
-
-type Experience = {
-  id: string
-  title: string
-  company: string
-  location: string
-  period: string
-  startDate: string
-  endDate?: string
-  status: EmploymentStatus
-  description: string[]
-  achievements?: string[]
-  technologies?: string[]
-  teamSize?: number
-  companyType?: string
-}
-
-const experiences: Experience[] = [
+const experiences = [
   {
-    id: "exp-1",
-    title: "智能化工程师",
-    company: "福建三丰科技有限公司",
-    location: "福建，福州",
-    period: "2024年3月 - 至今",
-    startDate: "2024-03",
-    status: "current",
-    companyType: "制造企业",
+    company: "紫讯技术（福建）股份有限公司",
+    title: "AI 研发工程师",
+    period: "2025年8月 - 至今",
+    current: true,
     description: [
-      "工业视觉：机器学习开发设备，多场景节省人力",
-      "数字化系统：前后端建设，支持决策咨询",
-      "大模型：本地部署AI，提供并发咨询",
+      "参与跨境电商 AIGC 产品 SellerPic 和 B2B 展会线索 SaaS Lensmor 的迭代。",
+      "负责 Web/H5、运营后台、服务端 API、任务队列、消息与支付接入。",
     ],
     achievements: [
-      "参与IP/IPF倍率检测，提高产品质量20%，节省人力1人",
-      "参与针车布标正反检测，提高生产品质，0错误针车缝合产物",
-      "FMA品质咨询系统，减少产品质量与生产环境沟通时间",
-      "车间数字化看板，信息汇总，减少信息差，建设数字化",
+      "从零参与 Lensmor 搭建，交付登录注册、用户管理、飞书通知、联系人筛选和异步导出等功能。",
+      "建设批量清洗、数据归一化、去重与人工复核流程，提供质量看板和异常诊断入口。",
+      "打通从广告来源、注册激活到付费和 CRM 商机的归因链路，支持转化回传和数据核验。",
+      "推动分层频率调度，无效扫描任务量周均下降约 53%。完成数据抓取供应商评估，按用量测算月成本可降低约 40%。",
+      "参与 SellerPic Agent、品牌资产库和官网工具页开发，调研图像修复方案并实践 ComfyUI 工作流。",
     ],
-    technologies: ["Vue", "React","FastAPI", "Python", "OpenCV","Yolo"],
+    technologies: ["TypeScript", "Node.js", "PostgreSQL", "PostHog", "GA4", "HubSpot", "ComfyUI"],
   },
   {
-    id: "exp-2",
-    title: "全栈开发工程师",
-    company: "福建乐想天成信息科技有限公司",
+    company: "福建三丰鞋业有限公司",
+    title: "算法工程师",
+    period: "2024年3月 - 2025年8月",
     location: "福建，福州",
-    period: "2021年3月 - 2024年2月",
-    startDate: "2021-03",
-    endDate: "2024-02",
-    status: "past",
-    companyType: "软件公司",
+    companyType: "制造企业",
+    current: false,
     description: [
-      "XR开发​​：Unity眼镜端应用设计，多硬件适配及游戏网络",
-      "数字孪生​​：three.js/Cesium构建模型，数据仿真应用实现",
-      "AI生成技术​​：数字人语音口型驱动，AIGC图像功能开发",
+      "负责工业视觉检测和产线设备调试。",
+      "参与 ISQ 品质咨询系统、FMA 监管平台与车间可视化看板开发。",
+      "在内网部署大模型，支持多个岗位使用。",
     ],
     achievements: [
-      "参与医学虚拟仿真、教育虚拟仿真、工业虚拟仿真应用开发",
-      "参与 AI 绘画页面业务开发与设计并训练专属模型与上线网站",
-      "参与数字人与大模型相关研究，参与数字人陪伴、数字人直播、数字人教育等多项技术研讨和项目分享",      
-      "参与2023年华为数字世界 一触即达担任讲解员、2023年创客中国比赛、2023年世界 VR 博览会新闻阅读分享等等多项活动",
+      "主导 IP/IPF 倍率检测与针车布标正反检测。倍率检测项目提高产品质量 20%，节省 1 个岗位的人力。",
+      "参与开发 ISQ 品质咨询系统，支持产线实时反馈和质量追踪，整体 A 品率提升 5%。",
+      "部署 34B 至 72B 规模的内网模型，支持 2 至 3 人并发使用，文员和协调岗位的文字编辑用时减少 30% 至 40%。",
     ],
-    technologies: ["Vue", "NodeJS", "Gin", "Python", "Unity 3D"],
+    technologies: ["Python", "OpenCV", "YOLO", "Vue", "FastAPI"],
+  },
+  {
+    company: "福建乐想天成信息科技有限公司",
+    title: "全栈工程师",
+    period: "2021年3月 - 2024年2月",
+    location: "福建，福州",
+    companyType: "软件公司",
+    current: false,
+    description: [
+      "参与 XR 多设备适配和数字孪生可视化。",
+      "参与数字人和 AIGC 应用开发，覆盖 Web、小程序、PC 和眼镜端。",
+    ],
+    achievements: [
+      "参与医疗、教育和工业虚拟仿真，以及气象、电力、仓储数字孪生应用开发。",
+      "开发数字人的语音合成与口型驱动模块，参与 AI 绘画平台开发、LoRA 模型训练及上线。",
+      "获 2023 年华为鲲鹏比赛福建区域创新赛三等奖。",
+    ],
+    technologies: ["Unity", "three.js", "ECharts", "Cesium", "Vue", "Stable Diffusion", "LoRA"],
   },
 ]
 
-const getStatusConfig = (status: EmploymentStatus) => {
-  switch (status) {
-    case "current":
-      return {
-        label: "当前职位",
-        color: "bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-400",
-        icon: TrendingUp,
-        iconColor: "text-green-600 dark:text-green-400",
-      }
-    case "past":
-      return {
-        label: "过往经历",
-        color: "bg-blue-500/10 text-blue-700 border-blue-500/20 dark:text-blue-400",
-        icon: CheckCircle2,
-        iconColor: "text-blue-600 dark:text-blue-400",
-      }
-    case "contract":
-      return {
-        label: "合同工作",
-        color: "bg-purple-500/10 text-purple-700 border-purple-500/20 dark:text-purple-400",
-        icon: Briefcase,
-        iconColor: "text-purple-600 dark:text-purple-400",
-      }
-    case "freelance":
-      return {
-        label: "自由职业",
-        color: "bg-orange-500/10 text-orange-700 border-orange-500/20 dark:text-orange-400",
-        icon: Users,
-        iconColor: "text-orange-600 dark:text-orange-400",
-      }
-    case "gap":
-      return {
-        label: "学习提升",
-        color: "bg-cyan-500/10 text-cyan-700 border-cyan-500/20 dark:text-cyan-400",
-        icon: Award,
-        iconColor: "text-cyan-600 dark:text-cyan-400",
-      }
-    default:
-      return {
-        label: "工作经历",
-        color: "bg-gray-500/10 text-gray-700 border-gray-500/20 dark:text-gray-400",
-        icon: Briefcase,
-        iconColor: "text-gray-600 dark:text-gray-400",
-      }
-  }
-}
-
 export default function Experience() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
-
   return (
-    <section id="experience" ref={ref} className="py-20 bg-muted/10 backdrop-blur-sm relative">
-      {/* Enhanced animated background pattern */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 0%, transparent 50%), 
-                             radial-gradient(circle at 75% 75%, #8b5cf6 0%, transparent 50%),
-                             radial-gradient(circle at 50% 50%, #06b6d4 0%, transparent 50%)`,
-          }}
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%"],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-          }}
-        />
-
-        {/* Floating geometric elements */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-16 h-16 border border-primary/5 rounded-lg"
-            style={{
-              left: `${10 + i * 15}%`,
-              top: `${15 + (i % 2) * 30}%`,
-            }}
-            animate={{
-              rotate: [0, 360],
-              scale: [1, 1.1, 1],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 15 + i * 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="container max-w-6xl mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="space-y-2 text-center mb-16"
-        >
-          <Badge variant="outline" className="px-3 py-1 text-sm bg-background/50 backdrop-blur-sm">
+    <section id="experience" className="relative scroll-mt-16 bg-muted/10 py-20 backdrop-blur-sm">
+      <div className="container relative mx-auto max-w-6xl px-4">
+        <div className="mb-16 space-y-2 text-center">
+          <Badge variant="outline" className="bg-background/50 px-3 py-1 text-sm backdrop-blur-sm">
             职业经历
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">工作经验</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">我的职业发展历程和重要里程碑</p>
-        </motion.div>
-
-        <div className="relative">
-          {/* Enhanced timeline line with gradient */}
-          <motion.div
-            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-purple-500 to-cyan-500 -ml-px md:block hidden rounded-full"
-            initial={{ scaleY: 0, opacity: 0 }}
-            animate={isInView ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
-            transition={{ duration: 1.2, delay: 0.5 }}
-            style={{ transformOrigin: "top" }}
-          />
-
-          <div className="space-y-8 relative">
-            {experiences.map((exp, index) => {
-              const statusConfig = getStatusConfig(exp.status)
-              const StatusIcon = statusConfig.icon
-              const isLeft = index % 2 === 0
-
-              return (
-                <motion.div
-                  key={exp.id}
-                  initial={{ opacity: 0, y: 50, x: isLeft ? -30 : 30 }}
-                  animate={isInView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y: 50, x: isLeft ? -30 : 30 }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                  className="relative"
-                >
-                  <Card
-                    className={`md:w-[calc(50%-32px)] ${
-                      isLeft ? "md:ml-auto md:mr-8" : "md:ml-8"
-                    } relative bg-background/60 backdrop-blur-md border-muted/30 hover:border-primary/30 transition-all duration-500 shadow-lg hover:shadow-xl group`}
-                  >
-                    {/* Enhanced timeline dot with status indication */}
-                    <motion.div
-                      className={`absolute top-8 ${
-                        isLeft ? "md:-right-[45px]" : "md:-left-[45px]"
-                      } -left-[21px] w-8 h-8 rounded-full border-4 border-background shadow-lg hidden md:flex items-center justify-center ${
-                        exp.status === "current"
-                          ? "bg-gradient-to-r from-green-500 to-emerald-500"
-                          : exp.status === "gap"
-                            ? "bg-gradient-to-r from-cyan-500 to-blue-500"
-                            : "bg-gradient-to-r from-primary to-purple-500"
-                      }`}
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-                      transition={{ duration: 0.5, delay: 0.8 + index * 0.15 }}
-                    >
-                      <StatusIcon className="h-4 w-4 text-white" />
-                    </motion.div>
-
-                    {/* Status indicator for mobile */}
-                    <div className="md:hidden absolute top-4 right-4">
-                      <Badge className={`${statusConfig.color} border text-xs font-medium`}>
-                        <StatusIcon className={`h-3 w-3 mr-1 ${statusConfig.iconColor}`} />
-                        {statusConfig.label}
-                      </Badge>
-                    </div>
-
-                    <motion.div whileHover={{ scale: 1.01, y: -2 }} transition={{ duration: 0.3 }} className="relative">
-                      <CardHeader className="pb-4">
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                                {exp.title}
-                              </h3>
-                              {/* Desktop status badge */}
-                              <Badge
-                                className={`${statusConfig.color} border text-xs font-medium hidden md:inline-flex`}
-                              >
-                                <StatusIcon className={`h-3 w-3 mr-1 ${statusConfig.iconColor}`} />
-                                {statusConfig.label}
-                              </Badge>
-                            </div>
-
-                            <div className="flex items-center gap-2 text-primary font-semibold">
-                              <Building2 className="h-4 w-4" />
-                              <span>{exp.company}</span>
-                              {exp.companyType && (
-                                <Badge variant="secondary" className="text-xs bg-primary/10 text-primary/80">
-                                  {exp.companyType}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-
-                      <CardContent className="space-y-6">
-                        {/* Enhanced metadata section */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-muted/20 rounded-lg border border-muted/20">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <MapPin className="h-4 w-4 text-primary" />
-                            <span>{exp.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4 text-primary" />
-                            <span>{exp.period}</span>
-                          </div>
-                          {exp.teamSize && (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Users className="h-4 w-4 text-primary" />
-                              <span>团队规模: {exp.teamSize}人</span>
-                            </div>
-                          )}
-                          {exp.status === "current" && (
-                            <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                              <Clock className="h-4 w-4" />
-                              <span>交接中</span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Job responsibilities */}
-                        <div className="space-y-3">
-                          <h4 className="font-semibold text-foreground flex items-center gap-2">
-                            <Briefcase className="h-4 w-4 text-primary" />
-                            主要职责
-                          </h4>
-                          <ul className="space-y-2">
-                            {exp.description.map((item, i) => (
-                              <motion.li
-                                key={i}
-                                className="flex gap-3 items-start text-sm text-muted-foreground leading-relaxed"
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                                transition={{ duration: 0.5, delay: 1.2 + index * 0.15 + i * 0.1 }}
-                              >
-                                <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0" />
-                                <span>{item}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Key achievements */}
-                        {exp.achievements && exp.achievements.length > 0 && (
-                          <div className="space-y-3">
-                            <h4 className="font-semibold text-foreground flex items-center gap-2">
-                              <Award className="h-4 w-4 text-primary" />
-                              关键成就
-                            </h4>
-                            <ul className="space-y-2">
-                              {exp.achievements.map((achievement, i) => (
-                                <motion.li
-                                  key={i}
-                                  className="flex gap-3 items-start text-sm text-foreground leading-relaxed"
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                                  transition={{ duration: 0.5, delay: 1.4 + index * 0.15 + i * 0.1 }}
-                                >
-                                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-                                  <span className="font-medium">{achievement}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {/* Technologies used */}
-                        {exp.technologies && exp.technologies.length > 0 && (
-                          <div className="space-y-3">
-                            <h4 className="font-semibold text-foreground text-sm">技术栈</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {exp.technologies.map((tech, i) => (
-                                <motion.div
-                                  key={tech}
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                                  transition={{ duration: 0.3, delay: 1.6 + index * 0.15 + i * 0.05 }}
-                                >
-                                  <Badge
-                                    variant="secondary"
-                                    className="text-xs bg-primary/5 text-primary hover:bg-primary/10 transition-colors cursor-default"
-                                  >
-                                    {tech}
-                                  </Badge>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </motion.div>
-                  </Card>
-                </motion.div>
-              )
-            })}
-          </div>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">工作经验</h2>
+          <p className="mx-auto max-w-2xl text-muted-foreground">我的职业发展历程和重要里程碑</p>
         </div>
 
-        {/* Career summary */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 1.8 }}
-          className="mt-16 text-center"
-        >
-        </motion.div>
+        <div className="relative md:px-8">
+          <div aria-hidden="true" className="absolute inset-y-0 left-1/2 hidden w-0.5 -translate-x-1/2 rounded-full bg-gradient-to-b from-primary via-purple-500 to-cyan-500 md:block" />
+          <ol className="space-y-8">
+            {experiences.map((experience, index) => {
+              const StatusIcon = experience.current ? TrendingUp : CheckCircle2
+              const statusColor = experience.current
+                ? "border-green-500/20 bg-green-500/10 text-green-700 dark:text-green-400"
+                : "border-blue-500/20 bg-blue-500/10 text-blue-700 dark:text-blue-400"
+              const markerColor = experience.current ? "from-green-500 to-emerald-500" : "from-primary to-purple-500"
+              const side = index % 2 === 0 ? "md:col-start-2" : "md:col-start-1"
+
+              return (
+                <li key={experience.company} className="relative md:grid md:grid-cols-2 md:gap-x-10">
+                  <span aria-hidden="true" className={"absolute left-1/2 top-8 z-10 hidden h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border-4 border-background bg-gradient-to-r text-white shadow-lg md:flex " + markerColor}>
+                    <StatusIcon className="h-4 w-4" />
+                  </span>
+                  <Card className={"group min-w-0 border-muted/30 bg-background/60 shadow-lg backdrop-blur-md transition-shadow hover:shadow-xl " + side}>
+                    <CardHeader className="space-y-2 p-5 pb-4 sm:p-6 sm:pb-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-xl font-bold transition-colors group-hover:text-primary">{experience.title}</h3>
+                        <Badge variant="outline" className={"gap-1 text-xs font-medium " + statusColor}>
+                          <StatusIcon aria-hidden="true" className="h-3 w-3" />
+                          {experience.current ? "当前职位" : "过往经历"}
+                        </Badge>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 font-semibold text-primary">
+                        <span className="flex items-center gap-2">
+                          <Building2 aria-hidden="true" className="h-4 w-4 shrink-0" />
+                          {experience.company}
+                        </span>
+                        {experience.companyType && (
+                          <Badge variant="secondary" className="bg-primary/10 text-xs text-primary/80">
+                            {experience.companyType}
+                          </Badge>
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-5 pb-5 sm:px-6 sm:pb-6">
+                      <div className="flex flex-wrap items-center gap-x-8 gap-y-2 rounded-lg border border-muted/20 bg-muted/20 p-4 text-sm text-muted-foreground">
+                        {experience.location && (
+                          <span className="flex items-center gap-2">
+                            <MapPin aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />
+                            {experience.location}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-2">
+                          <Calendar aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />
+                          {experience.period}
+                        </span>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="flex items-center gap-2 font-semibold">
+                          <Briefcase aria-hidden="true" className="h-4 w-4 text-primary" />
+                          主要职责
+                        </h4>
+                        <ul className="space-y-2">
+                          {experience.description.map((item) => (
+                            <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="flex items-center gap-2 font-semibold">
+                          <Award aria-hidden="true" className="h-4 w-4 text-primary" />
+                          关键成就
+                        </h4>
+                        <ul className="space-y-2">
+                          {experience.achievements.map((achievement) => (
+                            <li key={achievement} className="flex gap-3 text-sm font-medium leading-relaxed">
+                              <CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400" />
+                              <span>{achievement}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold">技术栈</h4>
+                        <ul className="flex flex-wrap gap-2" aria-label="技术栈">
+                          {experience.technologies.map((technology) => (
+                            <li key={technology}>
+                              <Badge variant="secondary" className="bg-primary/5 text-primary">{technology}</Badge>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </li>
+              )
+            })}
+          </ol>
+        </div>
       </div>
     </section>
   )

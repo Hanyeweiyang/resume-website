@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ExternalLink, Github, X } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 
 type Project = {
   id: string
@@ -25,34 +25,34 @@ const projects: Project[] = [
     id: "project-1",
     title: "多功能单位转换器",
     description: "电商领域设计的实用工具集合",
-    image: "/project/unit-converter.png?height=600&width=800",
-    tags: ["React","Next.js", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com/Hanyeweiyang/unit-converter.git",
-    demo: "https://zjh-unit-converter.vercel.app/",
+    image: "/project/unit-converter.png",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/Hanyeweiyang/unit-converter",
+    demo: "https://unit-converter-nine-beige.vercel.app/",
     details:
       "多功能单位转换器是一个为电商领域设计的实用工具集合，帮助用户轻松完成各种计算和转换任务。项目采用现代化前端技术栈，提供直观友好的用户界面和多语言支持。",
   },
   {
     id: "project-2",
     title: "AI 提示工程应用",
-    description: "支持实时更新的协作任务管理器",
-    image: "/project/prompt-engineering.png?height=600&width=800",
-    tags: ["React","Next.js", "TypeScript", "Tailwind CSS"],
+    description: "支持中英文的文本与图像提示词库",
+    image: "/project/prompt-engineering.png",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/Hanyeweiyang/prompt-engineering",
-    demo: "https://zjh-prompt-engineering.vercel.app/",
+    demo: "https://prompt-engineering-five.vercel.app/",
     details:
-      "AI 提示工程应用是一个基于 Next.js 的提示工程开发平台，旨在帮助开发者高效地创建、测试和部署 AI 提示工程应用。",
+      "提供文本和图像提示词的中英文示例，支持搜索、分类浏览与一键复制。",
   },
   {
     id: "project-3",
     title: "个人官网简历",
-    description: "具有官网性质的个人官网简历案例",
-    image: "/project/resume-website.png?height=600&width=800",
-    tags: ["React","Next.js", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com/Hanyeweiyang/resume-website.git",
-    demo: "https://zjh-prompt-engineering.vercel.app/",
+    description: "在线简历与项目作品集",
+    image: "/project/resume-website.png",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/Hanyeweiyang/resume-website",
+    demo: "https://resume-website-alpha-lac.vercel.app/",
     details:
-      "利用AI完成，个人官网简历的开发与设计，整体方案以官网的形式进行，帮助个人与小公司进行个人以及产品内容的宣传和引导。",
+      "响应式简历站，提供工作经历、项目展示、深色模式以及 PDF 简历的预览和下载。",
   },
 ]
 
@@ -62,7 +62,7 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, amount: 0.1 })
 
   return (
-    <section id="projects" ref={ref} className="py-20 bg-background/80 backdrop-blur-sm relative">
+    <section id="projects" ref={ref} className="relative scroll-mt-16 bg-background/80 py-20 backdrop-blur-sm">
       {/* Floating geometric shapes */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(4)].map((_, i) => (
@@ -91,13 +91,13 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="space-y-2 text-center mb-16"
+          className="mb-16 space-y-2 text-center"
         >
-          <Badge variant="outline" className="px-3 py-1 text-sm bg-background/50 backdrop-blur-sm">
+          <Badge variant="outline" className="bg-background/50 px-3 py-1 text-sm backdrop-blur-sm">
             作品集
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">精选项目</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">我的近期作品和个人项目展示</p>
+          <p className="mx-auto max-w-2xl text-muted-foreground">我的近期作品和个人项目展示</p>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,6 +115,7 @@ export default function Projects() {
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
                     fill
+                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -146,8 +147,8 @@ export default function Projects() {
         </div>
 
         <Dialog open={!!selectedProject} onOpenChange={(open) => !open && setSelectedProject(null)}>
-          <DialogContent className="max-w-3xl bg-background/95 backdrop-blur-md max-h-[90vh] overflow-y-auto md:max-w-2xl lg:max-w-3xl">
-            <DialogHeader>
+          <DialogContent className="max-h-[90svh] w-[calc(100%_-_1.5rem)] max-w-3xl overflow-y-auto rounded-lg bg-background/95 p-4 backdrop-blur-md sm:p-6 md:max-w-2xl lg:max-w-3xl">
+            <DialogHeader className="pr-6">
               <DialogTitle className="text-2xl">{selectedProject?.title}</DialogTitle>
               <DialogDescription className="text-muted-foreground">{selectedProject?.description}</DialogDescription>
             </DialogHeader>
@@ -158,6 +159,7 @@ export default function Projects() {
                   src={selectedProject.image || "/placeholder.svg"}
                   alt={selectedProject.title}
                   fill
+                  sizes="(min-width: 768px) 720px, 90vw"
                   className="object-cover"
                 />
               )}
@@ -208,15 +210,6 @@ export default function Projects() {
               </div>
             </div>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2"
-              onClick={() => setSelectedProject(null)}
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">关闭</span>
-            </Button>
           </DialogContent>
         </Dialog>
       </div>
